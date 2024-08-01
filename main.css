@@ -1,0 +1,38 @@
+img {
+    --n: 5;     /* the granularity */
+    --s: 12px;  /* control the pixel size */
+    --w: 280px; /* the image size */
+    
+    width: calc(round(var(--w),var(--s)) + var(--s)/2);
+    aspect-ratio: 1;
+    --_m:#0000 calc((var(--s)*(var(--n) + .5))/sqrt(2)),
+         #000 0 calc(100% - (var(--s)*(var(--n) + .5))/sqrt(2)),
+         #0000 0;
+    clip-path: polygon(
+      50% calc(var(--s)*var(--n) - 50%),
+      calc(150% - var(--s)*var(--n)) 50%,
+      50% calc(150% - var(--s)*var(--n)),
+      calc(var(--s)*var(--n) - 50%) 50%);
+    mask:
+      repeating-conic-gradient(#0000 0 25%,#000 0 50%) 
+       0 0/var(--s) var(--s),
+      linear-gradient(-45deg,var(--_m)) intersect,
+      linear-gradient( 45deg,var(--_m));
+  }
+  /* if round() is not supported we work with an increment method */
+  @supports not (opacity:round(1,1)) {
+    img {
+      --w: 21;
+      width:  calc(var(--w)*var(--s) + .5*var(--s));
+    }
+  }
+  
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-content: center;
+    grid-auto-flow: column;
+    gap: 50px;
+    background: #ECD078;
+  }
